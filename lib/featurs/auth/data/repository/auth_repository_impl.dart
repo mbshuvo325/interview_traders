@@ -23,22 +23,17 @@ class AuthRepositoryImpl implements AuthRepository{
 
   @override
   Future<Either<Failure,LoginEntity>?>? login(int login, String password) async{
-    // if(await networkInfo.isConnected!){
-    //   try{
-    //     final result = await loginDataSource.login(login, password);
-    //     //localDataSource.cacheToken(result!.token);
-    //     LoginModel loginModel = const LoginModel(result: true, token: "khjsdfusbhjf");
-    //     return Right(loginModel);
-    //   }on ServerException catch(_){
-    //     return const Left(ServerFailure(message: 'ServerException'));
-    //   }
-    // }else{
-    //   return const Left(ServerFailure(message: 'Network Failure'));
-    // }
-    await networkInfo!.isConnected!;
-    final result = await loginDataSource.login(login, password);
-    localDataSource.cacheToken(result!.token);
-    return Right(result);
+    if(await networkInfo!.isConnected!){
+      try{
+        final result = await loginDataSource.login(login, password);
+        localDataSource.cacheToken(result!.token);
+        return Right(result);
+      }on ServerException{
+        return const Left(ServerFailure(message: "Server Error"));
+      }
+    }else{
+      return const Left(ServerFailure(message: "No Internet Connection"));
+    }
   }
 
   @override

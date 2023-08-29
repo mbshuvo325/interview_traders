@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:traders/core/error/exceptions.dart';
+import 'package:traders/core/error/failure.dart';
 import 'package:traders/core/platform/network_info.dart';
 import 'package:traders/featurs/auth/data/data_source/local_data_source.dart';
 import 'package:traders/featurs/auth/data/data_source/login_data_source.dart';
@@ -60,6 +62,15 @@ void main() {
         await repositoryImpl!.login(tLogin, tPassword);
         verify(mockLoginDataSource!.login(tLogin, tPassword));
         verify(mockLocalDataSource!.cacheToken(tLoginModel.token));
+      });
+
+      test("Should return exception while server error", () async{
+        when(mockLoginDataSource!.login(tLogin, tPassword))
+            .thenThrow(ServerException(message: "Server Error"));
+        final result = await repositoryImpl!.login(tLogin, tPassword);
+        verify(mockLoginDataSource!.login(tLogin, tPassword));
+        verifyZeroInteractions(mockLocalDataSource);
+        expect(result, equals(const Left(ServerFailure(message: "Server Error"))));
       });
 
     });
