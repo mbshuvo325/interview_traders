@@ -11,7 +11,7 @@ class LoginUseCase implements UseCase<LoginEntity, LoginParams> {
   LoginUseCase(this.repository);
 
   @override
-  Future<Either<Failure,LoginEntity>>? call(LoginParams params) async {
+  Future<Either<Failure,LoginEntity>?>? call(LoginParams params) async {
     return await repository!.login(params.login,params.password)!;
   }
 }

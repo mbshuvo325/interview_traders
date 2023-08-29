@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:traders/featurs/auth/data/model/login_model.dart';
 import 'package:traders/featurs/auth/domain/entities/login_eitity.dart';
 
-import '../../../fixtures/fixture_reader.dart';
+import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
   const token = "bc3f82405cb2a88d6d7bb7fa86fd89cc8b70c220f5eec1494e8b0a229c317129";
