@@ -9,12 +9,12 @@ import 'package:traders/featurs/auth/domain/usecases/login_use_case.dart';
 class MocAuthRepository extends Mock implements AuthRepository {}
 
 void main() {
-  LoginUseCase? usecase;
+  LoginUseCase? useCase;
   MocAuthRepository? repository;
 
   setUp(() {
     repository = MocAuthRepository();
-    usecase = LoginUseCase(repository!);
+    useCase = LoginUseCase(repository!);
   });
 
   const tLogin = 123456;
@@ -23,7 +23,7 @@ void main() {
 
   test("Should get login Entity", () async {
     when(repository!.login(tLogin, tPassword)).thenAnswer((_) async => const Right(tLoginEntity));
-    final result = await usecase!(const LoginParams(login: tLogin, password: tPassword));
+    final result = await useCase!(const LoginParams(login: tLogin, password: tPassword));
     expect(result, const Right(tLoginEntity));
     verify(repository!.login(tLogin, tPassword));
     verifyNoMoreInteractions(repository!);
