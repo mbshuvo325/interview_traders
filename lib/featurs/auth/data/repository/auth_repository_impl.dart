@@ -23,7 +23,6 @@ class AuthRepositoryImpl implements AuthRepository{
 
   @override
   Future<Either<Failure,LoginEntity>?>? login(int login, String password) async{
-   await networkInfo!.isConnected;
     // if(await networkInfo.isConnected!){
     //   try{
     //     final result = await loginDataSource.login(login, password);
@@ -36,7 +35,10 @@ class AuthRepositoryImpl implements AuthRepository{
     // }else{
     //   return const Left(ServerFailure(message: 'Network Failure'));
     // }
-    return Right(await loginDataSource.login(login, password)!);
+    await networkInfo!.isConnected!;
+    final result = await loginDataSource.login(login, password);
+    localDataSource.cacheToken(result!.token);
+    return Right(result);
   }
 
   @override

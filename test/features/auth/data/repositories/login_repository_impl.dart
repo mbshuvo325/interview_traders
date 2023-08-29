@@ -54,6 +54,14 @@ void main() {
         verify(mockLoginDataSource!.login(tLogin, tPassword));
         expect(result, equals(const Right(tLoginEntity)));
       });
+
+      test("Should Cache token after got login response", () async{
+        when(mockLoginDataSource!.login(tLogin, tPassword)).thenAnswer((_) async => tLoginModel);
+        await repositoryImpl!.login(tLogin, tPassword);
+        verify(mockLoginDataSource!.login(tLogin, tPassword));
+        verify(mockLocalDataSource!.cacheToken(tLoginModel.token));
+      });
+
     });
 
     group("Device is Offline", () {
